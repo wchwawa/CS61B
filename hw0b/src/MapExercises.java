@@ -40,7 +40,7 @@ public class MapExercises {
         for (String str1 : words){
             int count = 0;
             for(String str2: words){
-                if str1.equals(str2){
+                if (str1.equals(str2)){
                     count ++;
                 }
             }
