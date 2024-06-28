@@ -26,9 +26,9 @@ class GUI extends TopLevel {
 
         _widget = new BoardWidget(model.size());
         add(_widget,
-            new LayoutSpec("y", 0,
-                           "height", "REMAINDER",
-                           "width", "REMAINDER"));
+                new LayoutSpec("y", 0,
+                        "height", "REMAINDER",
+                        "width", "REMAINDER"));
 
         _widget.requestFocusInWindow();
         _widget.setKeyHandler("keypress", this::keyPressed);
@@ -99,6 +99,6 @@ class GUI extends TopLevel {
 
     /** Queue of pending key presses. */
     private final ArrayBlockingQueue<String> _pendingKeys =
-        new ArrayBlockingQueue<>(5);
+            new ArrayBlockingQueue<>(5);
 
 }

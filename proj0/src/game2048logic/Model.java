@@ -84,7 +84,18 @@ public class Model {
      *  Empty spaces are stored as null.
      * */
     public boolean emptySpaceExists() {
-        // TODO: Task 2. Fill in this function.
+        // TODO: Task 1. Fill in this function.
+        int boardLength = this.board.size();
+
+        for (int i = 0; i < boardLength; i++){
+            for (int j = 0; j < boardLength; j ++){
+                Tile curTile = this.board.tile(i, j);
+                if (curTile == null) {
+                    return true;
+                }
+            }
+
+        }
         return false;
     }
 
@@ -94,7 +105,20 @@ public class Model {
      * given a Tile object t, we get its value with t.value().
      */
     public boolean maxTileExists() {
-        // TODO: Task 3. Fill in this function.
+        // TODO: Task 2. Fill in this function.
+        int boardLength = this.board.size();
+        int MAX_PIECE = 2048;
+
+        for (int i = 0; i < boardLength; i++){
+            for (int j = 0; j < boardLength; j ++){
+                Tile curTile = this.board.tile(i, j);
+                if (curTile == null) {
+                    continue;
+                }else if(curTile.value() == MAX_PIECE ) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -105,9 +129,51 @@ public class Model {
      * 2. There are two adjacent tiles with the same value.
      */
     public boolean atLeastOneMoveExists() {
-        // TODO: Fill in this function.
+        // TODO: Task 3. Fill in this function.
+        int boardLength = this.board.size();
+
+        for (int i = 0; i < boardLength; i++) {
+            for (int j = 0; j < boardLength; j++) {
+                Tile curTile = this.board.tile(i, j);       // current tile
+
+                if (curTile == null) {      /*special case: null*/
+                    return true;
+                }
+
+                int curTileValue = curTile.value();
+
+                if (i + 1 < boardLength) {       /* check right side*/
+                    Tile rightSideTile = this.board.tile(i + 1, j);
+                    if (rightSideTile.value() == curTileValue) {
+                        return true;
+                    }
+                }
+
+                if (i - 1 >= 0) {     /* check right side tile*/
+                    Tile leftSideTile = this.board.tile(i - 1, j);
+                    if (leftSideTile.value() == curTileValue) {
+                        return true;
+                    }
+                }
+
+                if (j + 1 < boardLength) {       /*check tile above*/
+                    Tile aboveTile = this.board.tile(i, j + 1);
+                    if (aboveTile.value() == curTileValue) {
+                        return true;
+                    }
+                }
+
+                if (j - 1 >= 0) {        /*check tile below*/
+                    Tile belowTile = this.board.tile(i, j - 1);
+                    if (belowTile.value() == curTileValue) {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
+
 
     /**
      * Moves the tile at position (x, y) as far up as possible.
@@ -124,11 +190,24 @@ public class Model {
      *    and the trailing tile does not.
      */
     public void moveTileUpAsFarAsPossible(int x, int y) {
-        Tile currTile = board.tile(x, y);
+        // TODO: Tasks 5, 6, and 10. Fill in this function.
+        Tile currTile = this.board.tile(x, y);
         int myValue = currTile.value();
         int targetY = y;
+        int maxY = board.size() - 1;
+        Tile upEdgeTile = this.board.tile(x, maxY);
 
-        // TODO: Tasks 5, 6, and 10. Fill in this function.
+        if (currTile != null) {
+            if (upEdgeTile != null) {
+                if (upEdgeTile.value() != currTile.value()) {
+                    this.board.move(x, maxY - 1, currTile);
+                } else {
+                    this.board.move(x, maxY, currTile);
+                }
+            } else {
+                this.board.move(x, maxY,currTile);
+            }
+        }
     }
 
     /** Handles the movements of the tilt in column x of the board
