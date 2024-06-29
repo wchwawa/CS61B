@@ -247,10 +247,13 @@ public class Model {
 
     public void tilt(Side side) {
         // TODO: Tasks 8 and 9. Fill in this function.
+        this.board.setViewingPerspective(side);
+
         int myBoardSize = this.board.size();
         for (int i = 0; i < myBoardSize; i ++){
             tiltColumn(i);
         }
+        this.board.setViewingPerspective(Side.NORTH);       //reset the north to side.north
     }
 
     /** Tilts every column of the board toward SIDE.
