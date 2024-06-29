@@ -206,11 +206,22 @@ public class Model {
         int targetY = y;
         Tile currTile = this.board.tile(x, targetY);
         int myValue = currTile.value();
-        int maxY = board.size() - 1;
+        int maxY = this.board.size() - 1;
         if (targetY == maxY){       //Do not move any tile located at up edge.
             return;
         }
-        Tile upEdgeTile = this.board.tile(x, maxY);
+        if (this.board.tile(x, targetY + 1) != null){
+            if (this.board.tile(x, targetY + 1).value() != currTile.value() ){
+                return;
+            }
+        }
+
+        Tile upEdgeTile = this.board.tile(x, maxY);        // NOT FINISHING YET!!upEdge tile logic
+        for(int i = targetY + 1; i < board.size(); i++){
+            if (this.board.tile(x, i) != null){
+                upEdgeTile = this.board.tile(x, i);
+            }
+        }
 
         if (currTile != null && upEdgeTile != null) {
                 if (upEdgeTile.value() != myValue) {
@@ -247,13 +258,13 @@ public class Model {
 
     public void tilt(Side side) {
         // TODO: Tasks 8 and 9. Fill in this function.
-        this.board.setViewingPerspective(side);
+        this.board.setViewingPerspective(side);         //set current side to side.north
 
         int myBoardSize = this.board.size();
         for (int i = 0; i < myBoardSize; i ++){
             tiltColumn(i);
         }
-        this.board.setViewingPerspective(Side.NORTH);       //reset the north to side.north
+        this.board.setViewingPerspective(Side.NORTH);       //reset the real side.north to side.north
     }
 
     /** Tilts every column of the board toward SIDE.
