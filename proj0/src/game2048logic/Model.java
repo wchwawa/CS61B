@@ -144,6 +144,9 @@ public class Model {
 
                 if (i + 1 < boardLength) {       /* check right side*/
                     Tile rightSideTile = this.board.tile(i + 1, j);
+                    if (rightSideTile == null){
+                        return true;
+                    }
                     if (rightSideTile.value() == curTileValue) {
                         return true;
                     }
@@ -151,6 +154,9 @@ public class Model {
 
                 if (i - 1 >= 0) {     /* check right side tile*/
                     Tile leftSideTile = this.board.tile(i - 1, j);
+                    if (leftSideTile == null){
+                        return true;
+                    }
                     if (leftSideTile.value() == curTileValue) {
                         return true;
                     }
@@ -158,6 +164,9 @@ public class Model {
 
                 if (j + 1 < boardLength) {       /*check tile above*/
                     Tile aboveTile = this.board.tile(i, j + 1);
+                    if (aboveTile == null){
+                        return true;
+                    }
                     if (aboveTile.value() == curTileValue) {
                         return true;
                     }
@@ -165,6 +174,9 @@ public class Model {
 
                 if (j - 1 >= 0) {        /*check tile below*/
                     Tile belowTile = this.board.tile(i, j - 1);
+                    if (belowTile == null){
+                        return true;
+                    }
                     if (belowTile.value() == curTileValue) {
                         return true;
                     }
@@ -191,22 +203,28 @@ public class Model {
      */
     public void moveTileUpAsFarAsPossible(int x, int y) {
         // TODO: Tasks 5, 6, and 10. Fill in this function.
-        Tile currTile = this.board.tile(x, y);
-        int myValue = currTile.value();
         int targetY = y;
+        Tile currTile = this.board.tile(x, targetY);
+        int myValue = currTile.value();
         int maxY = board.size() - 1;
+        if (targetY == maxY){       //Do not move any tile located at up edge.
+            return;
+        }
         Tile upEdgeTile = this.board.tile(x, maxY);
 
-        if (currTile != null) {
-            if (upEdgeTile != null) {
-                if (upEdgeTile.value() != currTile.value()) {
+        if (currTile != null && upEdgeTile != null) {
+                if (upEdgeTile.value() != myValue) {
                     this.board.move(x, maxY - 1, currTile);
                 } else {
-                    this.board.move(x, maxY, currTile);
+                    if (upEdgeTile.wasMerged() == false){
+                        this.board.move(x, maxY, currTile);
+                    }else{
+                        this.board.move(x, maxY - 1, currTile);
+                    }
                 }
-            } else {
-                this.board.move(x, maxY,currTile);
-            }
+        }
+        if (currTile != null && upEdgeTile == null){
+            this.board.move(x, maxY, currTile);
         }
     }
 
@@ -217,10 +235,22 @@ public class Model {
      * */
     public void tiltColumn(int x) {
         // TODO: Task 7. Fill in this function.
+        Board myBoard = this.board;
+        int boardSize = this.board.size();
+        for(int i = boardSize - 1; i >= 0; i --){
+            Tile curTile = this.board.tile(x, i);
+            if (curTile != null){
+                moveTileUpAsFarAsPossible(x, i);
+            }
+        }
     }
 
     public void tilt(Side side) {
         // TODO: Tasks 8 and 9. Fill in this function.
+        int myBoardSize = this.board.size();
+        for (int i = 0; i < myBoardSize; i ++){
+            tiltColumn(i);
+        }
     }
 
     /** Tilts every column of the board toward SIDE.

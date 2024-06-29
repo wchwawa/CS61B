@@ -34,6 +34,9 @@ class GUI extends TopLevel {
         _widget.setKeyHandler("keypress", this::keyPressed);
         setPreferredFocus(_widget);
         setScore(0);
+
+        // add log to ensure focus
+        System.out.println("Focus requested: " + _widget.requestFocusInWindow());
     }
 
     /** Response to "Quit" button click. */
