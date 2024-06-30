@@ -210,32 +210,47 @@ public class Model {
         if (targetY == maxY){       //Do not move any tile located at up edge.
             return;
         }
+
+        if (currTile == null){
+            return;
+        }
         if (this.board.tile(x, targetY + 1) != null){
             if (this.board.tile(x, targetY + 1).value() != currTile.value() ){
                 return;
             }
         }
 
+        int upEdgeTileY = maxY;
         Tile upEdgeTile = this.board.tile(x, maxY);        // NOT FINISHING YET!!upEdge tile logic
         for(int i = targetY + 1; i < board.size(); i++){
             if (this.board.tile(x, i) != null){
                 upEdgeTile = this.board.tile(x, i);
+                upEdgeTileY = i;
+                break;
             }
         }
 
-        if (currTile != null && upEdgeTile != null) {
+
+        if (upEdgeTile != null) {
                 if (upEdgeTile.value() != myValue) {
-                    this.board.move(x, maxY - 1, currTile);
+                    if (upEdgeTileY - targetY == 1){
+                        return;
+                    }else {
+                        this.board.move(x, upEdgeTileY - 1, currTile);
+                    }
                 } else {
                     if (upEdgeTile.wasMerged() == false){
-                        this.board.move(x, maxY, currTile);
+                        this.board.move(x, upEdgeTileY, currTile);
                     }else{
-                        this.board.move(x, maxY - 1, currTile);
+                        this.board.move(x, upEdgeTileY - 1, currTile);
                     }
                 }
+        }else {
+            this.board.move(x, upEdgeTileY, currTile);
         }
-        if (currTile != null && upEdgeTile == null){
-            this.board.move(x, maxY, currTile);
+
+        if (currTile.wasMerged() == true){
+            this.score += currTile.value() * 2;
         }
     }
 
