@@ -33,7 +33,7 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
         Node tempNode = new Node(sentinel, x, sentinel.next);
         sentinel.next.prev = tempNode;
         sentinel.next = tempNode;
-
+        n
     }
 
     @Override

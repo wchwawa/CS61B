@@ -13,7 +13,7 @@ public class Arithmetic {
     public static int product(int a, int b) {
         return a * b;
     }
-
+    
     /** Computes sum of two ints (incorrectly).
      * @param a Value 1
      * @param b Value 2
